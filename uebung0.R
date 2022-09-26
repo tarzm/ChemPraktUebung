@@ -74,7 +74,9 @@ zeit <-c(9.93, 9.93, 9.93, 9.92, 9.90, 9.86, 9.85, 9.84, 9.79, 9.77, 9.77, 9.77,
 linear_model <-lm(zeit ~ datum)
 summary(linear_model)
 plot(datum , zeit)
-abline(linear_model)
+abline
+
+#somenewline
 
 ##################END Übung 3##################
 
