@@ -130,6 +130,7 @@ summary(linear_model)
 plot(datum , zeit)
 abline(linear_model)
 
+#besser so
 @ %Ende R code
 
 
