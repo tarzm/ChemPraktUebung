@@ -72,21 +72,42 @@ pip_cx_95 <- pip_fractile_95 * pip_mean_sd
 pip_cx_99 <- pip_fractile_99 * pip_mean_sd
 
 cat("95 % Vertrauensintervall : [", pip_mean - pip_cx_95,
-                                " mL,", pip_mean + pip_cx_95, "mL]")
+    " mL,", pip_mean + pip_cx_95, "mL]")
 
 cat("99 % Vertrauensintervall : [", pip_mean - pip_cx_99,
-                                " mL,", pip_mean + pip_cx_99, "mL]")
+    " mL,", pip_mean + pip_cx_99, "mL]")
 
+fig.height=3
+fig.width=10
 plot.new()
-arrows(pip_mean - pip_cx_95, 1, pip_mean + pip_cx_95,
-        code=3, angle=90, length=0.02)
+arrows(pip_mean - pip_cx_95, 1, pip_mean + pip_cx_95, code=3, angle=90, length=0.02)
+@ %Ende R code
 
+\section{Übung 3}
 
+<<>>= %Anfang R code
+
+#95% Vertrauensintervall
+cat("\n19.90 +- 0.05 mL")
 
 @ %Ende R code
 
+\section{Übung 4}
 
+<<>>= %Anfang R code
 
+datum <- c(1983.504, 1987.663, 1988.628, 1988.732, 1991.452,
+            1991.649, 1994.514, 1996.570, 1999.458, 2005.452, 2006.444,
+            2006.630, 2007.690, 2008.415, 2008.626, 2009.652)
+zeit <-c(9.93, 9.93, 9.93, 9.92, 9.90, 9.86, 9.85, 9.84,
+        9.79, 9.77, 9.77, 9.77, 9.74, 9.72, 9.69, 9.58)
+
+linear_model <-lm(zeit ~ datum)
+summary(linear_model)
+plot(datum , zeit)
+abline(linear_model)
+
+@ %Ende R code
 
 
 
