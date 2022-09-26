@@ -44,14 +44,16 @@ pip_cx_99 <- pip_fractile_99 * pip_mean_sd
 cat("95 % Vertrauensintervall : [", pip_mean - pip_cx_95,
     " mL,", pip_mean + pip_cx_95, "mL]")
 
-cat("99 % Vertrauensintervall : [", pip_mean - pip_cx_99,
+cat("\n99 % Vertrauensintervall : [", pip_mean - pip_cx_99,
     " mL,", pip_mean + pip_cx_99, "mL]")
 
-fig.height=3
-fig.width=10
-plot.new()
-arrows(pip_mean - pip_cx_95, 1, pip_mean + pip_cx_95, code=3, angle=90, length=0.02)
-#plot(pip_mean, 1, ylab="",yaxt="n", xlim=c(19.7,20.1))
+#plot
+plot(pip_mean, 1, xlim=c(19.7, 20.1), yaxt="n",
+     ylab="", xlab="V/mL", tcl=-0.25, frame.plot=FALSE)
+arrows(pip_mean - pip_cx_95, 1, pip_mean + pip_cx_95,
+       code=3, angle=90, length=0.02, col="blue")
+arrows(20-0.05, 0.2, 20+0.05, 0.2,
+       code=3, angle=90, length=0.02, col="red")
 
 ##################END Übung 2##################
 
@@ -61,6 +63,8 @@ arrows(pip_mean - pip_cx_95, 1, pip_mean + pip_cx_95, code=3, angle=90, length=0
 
 #Vertrauensintervall
 cat("\n19.90 +- 0.05 mL")
+#Standardabweichung
+cat("\n19.894(12) mL")
 
 
 ##################END Übung 3##################
@@ -74,7 +78,7 @@ zeit <-c(9.93, 9.93, 9.93, 9.92, 9.90, 9.86, 9.85, 9.84, 9.79, 9.77, 9.77, 9.77,
 linear_model <-lm(zeit ~ datum)
 summary(linear_model)
 plot(datum , zeit)
-abline
+abline(linear_model)
 
 #somenewline
 
