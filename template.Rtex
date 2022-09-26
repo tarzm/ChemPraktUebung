@@ -1,0 +1,43 @@
+%++++++++++++++++++++++++++++++++++++++++
+\documentclass[letterpaper,12pt]{article}
+\usepackage{tabularx} % extra features for tabular environment
+\usepackage{amsmath}  % improve math presentation
+\usepackage{graphicx} % takes care of graphic including machinery
+\usepackage[margin=1in,letterpaper]{geometry} % decreases margins
+\usepackage{cite} % takes care of citations
+\usepackage[final]{hyperref} % adds hyper links inside the generated pdf file
+\hypersetup{
+	colorlinks=true,       % false: boxed links; true: colored links
+	linkcolor=blue,        % color of internal links
+	citecolor=blue,        % color of links to bibliography
+	filecolor=magenta,     % color of file links
+	urlcolor=blue         
+}
+%++++++++++++++++++++++++++++++++++++++++
+
+
+\begin{document}
+
+\title{PC Praktikum Übung}
+\author{Tarzis Maurer 17-934-274}
+\date{\today}
+\maketitle
+
+\section{Übung 1}
+
+
+<<>>= %Anfang R code
+#messadaten pippetiert
+pipettiert_gewicht <- c(19.8689, 19.8542, 19.8443, 19.8560,19.8489,
+                        19.8785, 19.8619, 19.8747, 19.8500, 19.8455) #g
+#pipettierte volumen
+dichte_wasser <- 0.99820 #g/cm^3 = g/mL
+pipettiert <- pipettiert_gewicht / dichte_wasser #mL
+
+
+@ %Ende R code
+Wobei alle Angaben in mL sind.
+
+
+
+\end{document}
