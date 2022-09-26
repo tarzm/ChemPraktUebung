@@ -43,17 +43,26 @@ pip_cx_99 <- pip_fractile_99 * pip_mean_sd
 
 cat("95 % Vertrauensintervall : [", pip_mean - pip_cx_95,
     " mL,", pip_mean + pip_cx_95, "mL]")
-
+ srt=3
 cat("\n99 % Vertrauensintervall : [", pip_mean - pip_cx_99,
     " mL,", pip_mean + pip_cx_99, "mL]")
 
+#hersteller
+hersteller_mean <- 20.00
+hersteller_vi <- 0.05
+
+gemessen_label <- "Gemessen"
+hersteller_label <- "Hersteller"
+
 #plot
-plot(pip_mean, 1, xlim=c(19.7, 20.1), yaxt="n",
+plot(c(pip_mean, hersteller_mean), c(1,1), xlim=c(19.7, 20.1), yaxt="n",
      ylab="", xlab="V/mL", tcl=-0.25, frame.plot=FALSE)
 arrows(pip_mean - pip_cx_95, 1, pip_mean + pip_cx_95,
        code=3, angle=90, length=0.02, col="blue")
-arrows(20-0.05, 0.2, 20+0.05, 0.2,
+arrows(hersteller_mean - hersteller_vi, 1, hersteller_mean+hersteller_vi, 1,
        code=3, angle=90, length=0.02, col="red")
+text(x=pip_mean, y=1.2, label=gemessen_label)
+text(x=hersteller_mean, y=1.2, label=hersteller_label)
 
 ##################END Übung 2##################
 
