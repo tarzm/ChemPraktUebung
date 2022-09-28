@@ -1,8 +1,7 @@
 ##################Übung 1##################
 
 #messadaten pippetiert
-pipettiert_gewicht <- c(19.8689, 19.8542, 19.8443, 19.8560,19.8489,
-                        19.8785, 19.8619, 19.8747, 19.8500, 19.8455) #g
+pipettiert_gewicht <- c(19.8689, 19.8542, 19.8443, 19.8560,19.8489, 19.8785, 19.8619, 19.8747, 19.8500, 19.8455) #g
 #pipettierte volumen
 dichte_wasser <- 0.99820 #g/cm^3 = g/mL
 pipettiert <- pipettiert_gewicht / dichte_wasser #mL
@@ -26,12 +25,10 @@ data.frame(pip_mean, pip_sd, pip_var, pip_mean_sd, pip_mean_var)
 ################## END Übung 1##################
 
 
-
-
 ##################Übung 2##################
 
 #degrees of freedom
-pip_v <- pip_n <- 1
+pip_v <- pip_n - 1
 
 #fractiles
 pip_fractile_95 <- qt(0.975, pip_v)
@@ -41,28 +38,28 @@ pip_fractile_99 <- qt(0.995, pip_v)
 pip_cx_95 <- pip_fractile_95 * pip_mean_sd
 pip_cx_99 <- pip_fractile_99 * pip_mean_sd
 
-cat("95 % Vertrauensintervall : [", pip_mean - pip_cx_95,
+cat("\n95 % Vertrauensintervall : [", pip_mean - pip_cx_95,
     " mL,", pip_mean + pip_cx_95, "mL]")
  srt=3
 cat("\n99 % Vertrauensintervall : [", pip_mean - pip_cx_99,
-    " mL,", pip_mean + pip_cx_99, "mL]")
+    " mL,", pip_mean + pip_cx_99, "mL]\n")
 
 #hersteller
 hersteller_mean <- 20.00
 hersteller_vi <- 0.05
-
+#labels arrows
 gemessen_label <- "Gemessen"
 hersteller_label <- "Hersteller"
 
 #plot
-plot(c(pip_mean, hersteller_mean), c(1,1), xlim=c(19.7, 20.1), yaxt="n",
+plot(c(pip_mean, hersteller_mean), c(0.1,0.1), xlim=c(19.7, 20.1), yaxt="n",
      ylab="", xlab="V/mL", tcl=-0.25, frame.plot=FALSE)
-arrows(pip_mean - pip_cx_95, 1, pip_mean + pip_cx_95,
+arrows(pip_mean - pip_cx_95, 0.1, pip_mean + pip_cx_95, 0.1,
        code=3, angle=90, length=0.02, col="blue")
-arrows(hersteller_mean - hersteller_vi, 1, hersteller_mean+hersteller_vi, 1,
+arrows(hersteller_mean - hersteller_vi, 0.1, hersteller_mean+hersteller_vi, 0.1,
        code=3, angle=90, length=0.02, col="red")
-text(x=pip_mean, y=1.2, label=gemessen_label)
-text(x=hersteller_mean, y=1.2, label=hersteller_label)
+text(x=pip_mean, y=0.11, label=gemessen_label)
+text(x=hersteller_mean, y=0.11, label=hersteller_label)
 
 ##################END Übung 2##################
 
@@ -71,27 +68,103 @@ text(x=hersteller_mean, y=1.2, label=hersteller_label)
 ##################Übung 3##################
 
 #Vertrauensintervall
-cat("\n19.90 +- 0.05 mL")
+cat("\nVertrauensintervall: 19.894 +- 0.009 mL")
 #Standardabweichung
-cat("\n19.894(12) mL")
+cat("\nStandardabweichung: 19.894(4) mL\n")
 
 
 ##################END Übung 3##################
 
 
-##################Übung 3##################
+##################Übung 4##################
+
+datum <- c(1983.504, 1987.663, 1988.628, 1988.732, 1991.452, 1991.649, 1994.514, 1996.570, 1999.458, 2005.452, 2006.444, 2006.630, 2007.690, 2008.415, 2008.626, 2009.652)
+zeit <-c(9.93, 9.93, 9.93, 9.92, 9.90, 9.86, 9.85, 9.84, 9.79, 9.77, 9.77, 9.77, 9.74, 9.72, 9.69, 9.58)
+plot(datum, zeit)
+# Vertical grid
+axis(1, tck = 1, lty = 2, col = "gray")
+
+# Horizontal grid  
+axis(2, tck = 1, lty = 2, col = "gray")
+
+##################END Übung 4##################
+
+
+##################Übung 5##################
 
 datum <- c(1983.504, 1987.663, 1988.628, 1988.732, 1991.452, 1991.649, 1994.514, 1996.570, 1999.458, 2005.452, 2006.444, 2006.630, 2007.690, 2008.415, 2008.626, 2009.652)
 zeit <-c(9.93, 9.93, 9.93, 9.92, 9.90, 9.86, 9.85, 9.84, 9.79, 9.77, 9.77, 9.77, 9.74, 9.72, 9.69, 9.58)
 
-linear_model <-lm(zeit ~ datum)
+linear_model <- lm(zeit ~ datum)
 summary(linear_model)
 plot(datum , zeit)
 abline(linear_model)
 
-#somenewline
+#extract values
+matrix_coeffs <- summary(linear_model)$coefficients
+cat("\n")
+print(matrix_coeffs)
 
-##################END Übung 3##################
+#ROW MAJOR access, COLUMN MAJOR entry!
+#get coeffs
+t0 <- matrix_coeffs[1,1] #first row, first column
+k <- matrix_coeffs[2,1] #second row, first column
+
+cat("\nt0: ", t0, " \n")
+cat("k: ", k, " \n")
+
+#get standard deviation
+sd_t0 <- matrix_coeffs[1,2] #first row, second column
+sd_k <- matrix_coeffs[2,2] #second row, second column
+
+cat("sd_t0: ", sd_t0, " \n")
+cat("sd_k: ", sd_k, " \n")
 
 
+#Vertrauensintervall
+n_zeit <- length(zeit)
+#fractiles
+zeit_fractile_95 <- qt(0.975, n_zeit -2) # - 2 wegen linearer regression
+# +- im Vertrauensintervall
+t0_cx_95 <- zeit_fractile_95 * sd_t0
+k_cx_95 <- zeit_fractile_95 * sd_k
+
+cat("\nResultat t0: 31 +- 5")
+cat("\nResultat k: -0.0103 +- 0.0024\n")
+
+##################END Übung 5##################
+
+##################Übung 6##################
+
+d_mean <- 72.38 #cm
+U_mean <- 227.6 #cm
+d_sd <- 0.15 #cm
+U_sd <- 0.4 #cm
+
+pi_mean <- U_mean / d_mean
+pi_sd_power2 <- (1 / d_mean)^2 * U_sd^2 + (U_mean / -d_mean^2)^2 * d_sd^2
+pi_sd <-sqrt(pi_sd_power2)
+
+pi_fractile_95 <- qt(0.975, 5 - 1)
+pi_cx_95 <- pi_fractile_95 * pi_sd
+
+cat("\nResultat Pi: 3.145 +- 0.024")
+
+
+##################END Übung 6##################
+
+##################Übung 7##################
+ 
+koelbli <-  0.025  * 1e-3#m^3
+u_koelbli <-  2 * 0.00004 * 1e-3#m^3
+waage <- 0.02198 #kg
+u_waage <- 2 * 0.00001 #kg
+
+dichteDiesel <- waage / koelbli
+u_dichteDiesel <- abs(waage / koelbli^2) * u_koelbli + abs(1/koelbli) * u_waage
+
+
+cat("\n\nDichte Diesel: 879  +- 4 kg/m^3")
+
+##################END Übung 7##################
   
