@@ -20,6 +20,7 @@
 \begin{document}
 
 \title{PC Praktikum Übung}
+\preauthor{}
 \author{Tarzis Maurer 17-934-274}
 \date{\today}
 \maketitle
@@ -32,7 +33,7 @@
 <<>>= %Anfang R code
 #messadaten pippetiert
 pipettiert_gewicht <- c(19.8689, 19.8542, 19.8443, 19.8560,19.8489,
-                        19.8785, 19.8619, 19.8747, 19.8500, 19.8455) #g
+    19.8785, 19.8619, 19.8747, 19.8500, 19.8455) #g
 #pipettierte volumen
 dichte_wasser <- 0.99820 #g/cm^3 = g/mL
 pipettiert <- pipettiert_gewicht / dichte_wasser #mL
@@ -58,10 +59,10 @@ Wobei alle Angaben in mL sind.
 
 \section{Übung 2}
 
-<<>>= %Anfang R code
+<<fig.height=2.5, fig.width=7, fig.align = 'center'>>= %Anfang R code
 
 #degrees of freedom
-pip_v <- pip_n <- 1
+pip_v <- pip_n - 1
 
 #fractiles
 pip_fractile_95 <- qt(0.975, pip_v)
@@ -71,68 +72,143 @@ pip_fractile_99 <- qt(0.995, pip_v)
 pip_cx_95 <- pip_fractile_95 * pip_mean_sd
 pip_cx_99 <- pip_fractile_99 * pip_mean_sd
 
-cat("95 % Vertrauensintervall : [", pip_mean - pip_cx_95,
+cat("\n95 % Vertrauensintervall : [", pip_mean - pip_cx_95,
     " mL,", pip_mean + pip_cx_95, "mL]")
-
+ srt=3
 cat("\n99 % Vertrauensintervall : [", pip_mean - pip_cx_99,
-    " mL,", pip_mean + pip_cx_99, "mL]")
+    " mL,", pip_mean + pip_cx_99, "mL]\n")
 
 #hersteller
 hersteller_mean <- 20.00
 hersteller_vi <- 0.05
-
+#labels arrows
 gemessen_label <- "Gemessen"
 hersteller_label <- "Hersteller"
 
-@
-
-<<plot1, fig.pos="t", fig.height=2.5, fig.width=7, fig.cap="95 Prozent Vertaruensintervalle der Pipette">>=
-
-
-
 #plot
-plot(c(pip_mean, hersteller_mean), c(1,1), xlim=c(19.7, 20.1), yaxt="n",
+plot(c(pip_mean, hersteller_mean), c(0.1,0.1), xlim=c(19.7, 20.1), yaxt="n",
      ylab="", xlab="V/mL", tcl=-0.25, frame.plot=FALSE)
-arrows(pip_mean - pip_cx_95, 1, pip_mean + pip_cx_95,
+arrows(pip_mean - pip_cx_95, 0.1, pip_mean + pip_cx_95, 0.1,
        code=3, angle=90, length=0.02, col="blue")
-arrows(hersteller_mean - hersteller_vi, 1, hersteller_mean+hersteller_vi, 1,
-       code=3, angle=90, length=0.02, col="red")
-text(x=pip_mean, y=1.2, label=gemessen_label)
-text(x=hersteller_mean, y=1.2, label=hersteller_label)
+arrows(hersteller_mean - hersteller_vi, 0.1, hersteller_mean + hersteller_vi
+        , 0.1, code=3, angle=90, length=0.02, col="red")
+text(x=pip_mean, y=0.12, label=gemessen_label)
+text(x=hersteller_mean, y=0.12, label=hersteller_label)
+
 @
+
 
 \newpage
 \section{Übung 3}
 
 <<>>= %Anfang R code
 
-#95% Vertrauensintervall
-cat("\n19.90 +- 0.05 mL")
+#Vertrauensintervall
+cat("\nVertrauensintervall: 19.894 +- 0.009 mL")
+#Standardabweichung
+cat("\nStandardabweichung: 19.894(4) mL\n")
 
 @ %Ende R code
 
 \section{Übung 4}
 
+\includegraphics[width=\textwidth]{Sprint_annotated}
+Die blaue Linie ist "von Hand" in einem Zeichenprogramm eingezeichnet. Die Steigung ist ca. $- \frac{0.05 s}{5 Jahre} $ also ca $-0.01 \cdot s \cdot Jahr^{-1}$. Daraus ergibt sich $ t_0 = 9.58  - 0.01 \cdot (- 2010) = 29.68 s$
+
+
+
+\section{Übung 5}
+
 <<>>= %Anfang R code
 
-datum <- c(1983.504, 1987.663, 1988.628, 1988.732, 1991.452,
-            1991.649, 1994.514, 1996.570, 1999.458, 2005.452, 2006.444,
-            2006.630, 2007.690, 2008.415, 2008.626, 2009.652)
-zeit <-c(9.93, 9.93, 9.93, 9.92, 9.90, 9.86, 9.85, 9.84,
-        9.79, 9.77, 9.77, 9.77, 9.74, 9.72, 9.69, 9.58)
+datum <- c(1983.504, 1987.663, 1988.628, 1988.732, 1991.452, 1991.649, 1994.514, 1996.570, 1999.458, 2005.452, 2006.444, 2006.630, 2007.690, 2008.415, 2008.626, 2009.652)
+zeit <-c(9.93, 9.93, 9.93, 9.92, 9.90, 9.86, 9.85, 9.84, 9.79, 9.77, 9.77, 9.77, 9.74, 9.72, 9.69, 9.58)
 
-linear_model <-lm(zeit ~ datum)
+linear_model <- lm(zeit ~ datum)
 summary(linear_model)
-
-@
-
-<<plot2, fig.pos="t", fig.height=4, fig.width=7, fig.cap="95 Prozent Vertaruensintervall der Pipette">>=
 plot(datum , zeit)
 abline(linear_model)
 
-#besser so
+#extract values
+matrix_coeffs <- summary(linear_model)$coefficients
+cat("\n")
+print(matrix_coeffs)
+
+#ROW MAJOR access, COLUMN MAJOR entry!
+#get coeffs
+t0 <- matrix_coeffs[1,1] #first row, first column
+k <- matrix_coeffs[2,1] #second row, first column
+
+cat("\nt0: ", t0, " \n")
+cat("k: ", k, " \n")
+
+#get standard deviation
+sd_t0 <- matrix_coeffs[1,2] #first row, second column
+sd_k <- matrix_coeffs[2,2] #second row, second column
+
+cat("sd_t0: ", sd_t0, " \n")
+cat("sd_k: ", sd_k, " \n")
+
+
+#Vertrauensintervall
+n_zeit <- length(zeit)
+#fractiles
+zeit_fractile_95 <- qt(0.975, n_zeit -2) # - 2 wegen linearer regression
+# +- im Vertrauensintervall
+t0_cx_95 <- zeit_fractile_95 * sd_t0
+k_cx_95 <- zeit_fractile_95 * sd_k
+
+cat("\nResultat t0: 31 +- 5")
+cat("\nResultat k: -0.0103 +- 0.0024\n")
+
+@ %Ende R code
+
+\subsection{Punkt 1}
+Die Schätzung von Hand war ziemlich genau.
+
+\subsection{Punkt 6}
+Um Christi 30 Sekunden für die 100, im Schnitt eine Hundertstel pro Jahr schneller.
+
+\subsection{Punkt 7}
+Vor Bolt wurde der Rekord während fast zehn Jahren nur minim verbessert. Bolt hat dann gleich dreimal den Rekord stark verbessert. Ohne ihn würde die Regressionsgerade um einiges anders aussehen.
+
+\section{Übung 6}
+
+<<>>= %Anfang R code
+
+d_mean <- 72.38 #cm
+U_mean <- 227.6 #cm
+d_sd <- 0.15 #cm
+U_sd <- 0.4 #cm
+
+pi_mean <- U_mean / d_mean
+pi_sd_power2 <- (1 / d_mean)^2 * U_sd^2 + (U_mean / -d_mean^2)^2 * d_sd^2
+pi_sd <-sqrt(pi_sd_power2)
+
+pi_fractile_95 <- qt(0.975, 5 - 1)
+pi_cx_95 <- pi_fractile_95 * pi_sd
+
+cat("\nResultat Pi: 3.145 +- 0.024")
+
 @ %Ende R code
 
 
+\section{Übung 7}
+
+<<>>= %Anfang R code
+
+koelbli <-  0.025  * 1e-3#m^3
+u_koelbli <-  2 * 0.00004 * 1e-3#m^3
+waage <- 0.02198 #kg
+u_waage <- 2 * 0.00001 #kg
+
+dichteDiesel <- waage / koelbli
+u_dichteDiesel <- abs(waage / koelbli^2) * u_koelbli
+                + abs(1/koelbli) * u_waage
+
+
+cat("\n\nDichte Diesel: 879  +- 4 kg/m^3")
+
+@ %Ende R code
 
 \end{document}
